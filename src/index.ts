@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 
-import tagRoutes from './routes/tag-routes.js';
+import tagRoutes from './routes/challenge-routes.js';
 
 const app = express();
 

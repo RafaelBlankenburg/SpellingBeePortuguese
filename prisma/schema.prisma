@@ -14,9 +14,9 @@ datasource db {
 }
 
 model Challenge {
-  id              String             @id @default(uuid())
-  date            DateTime
-  centerLetter    String
+  id              String    @id @default(uuid())
+  date            DateTime  @default(now())
+  centerLetter    String    
   letters         String
 
   challengeWords  ChallengeWord[]

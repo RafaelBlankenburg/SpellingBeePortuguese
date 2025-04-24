@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "Challenge" (
     "id" TEXT NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "centerLetter" TEXT NOT NULL,
     "letters" TEXT NOT NULL,
 
