@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:16
-    container_name: postgres_container
+    container_name: postgresql_container
     restart: always
     env_file: .env
     environment:
@@ -22,7 +22,7 @@ services:
 
   migrations:
     build: .
-    container_name: prisma_migrations
+    container_name: migrations
     depends_on:
       db:
         condition: service_healthy
@@ -35,7 +35,7 @@ services:
 
   app:
     build: .
-    container_name: backend_container
+    container_name: back_container
     depends_on:
       migrations:
         condition: service_completed_successfully
@@ -53,7 +53,7 @@ services:
 
   adminer:
     image: adminer
-    container_name: adminer_container
+    container_name: adminer8080_container
     restart: always
     depends_on:
       - db

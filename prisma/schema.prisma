@@ -13,17 +13,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Tag {
+model Challenge {
   id              String             @id @default(uuid())
-  name            String             @db.VarChar(100)
-  type            TagType
-  restaurants     RestaurantTag[]
-  userPreferences User_Preferences[]
+  date            DateTime
+  centerLetter    String
+  letters         String
+
+  challengeWords  ChallengeWord[]
+  userWords       UserWord[]
+  userScores      UserScore[]
 }
 
-enum TagType {
-  LOCAL
-  CATEGORIA
-  OCASIAO
+model ChallengeWord{
+  id           String     @id @default(uuid())
+  word         String
+  challenge    Challenge  @relation(fields: [challenge_id], references: [id])
+  challenge_id  String
+
+  @@unique([challenge_id, word])
+
 }
 
+model UserWord{
+  id           String     @id @default(uuid())
+  word         String
+  foundAt      DateTime   @default(now())
+  challenge    Challenge  @relation(fields: [challenge_id], references: [id])
+  challenge_id  String
+
+  @@unique([challenge_id, word])
+}
+
+model UserScore{
+  id           String     @id @default(uuid())
+  score        Int        @default(0)
+  lastUpdated  DateTime   @default(now())
+  challenge    Challenge  @relation(fields: [challenge_id], references: [id])
+  challenge_id  String
+}
