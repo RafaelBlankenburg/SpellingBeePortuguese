@@ -92,11 +92,13 @@ export class ChallengeService {
     }
 
     await ChallengeRepository.addUserWord(challenge_id, user_id, normalizedWord);
-    await ChallengeRepository.incrementUserScore(challenge_id, user_id);
+    const userScore = await ChallengeRepository.incrementUserScore(challenge_id, user_id);
+
 
     return {
       message: 'Correto!',
       word: normalizedWord,
+      userScore: userScore.score,
     };
   }
 }
