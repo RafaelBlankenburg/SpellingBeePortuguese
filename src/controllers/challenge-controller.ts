@@ -17,5 +17,19 @@ export class ChallengeController {
       res.status(500).json({ error: 'Failed to create challenge' });
     }
   }
+
+  static async validateWord(req: Request, res: Response) {
+    const { challengeId } = req.params;
+    const { word } = req.body;
+  
+    try {
+      const result = await ChallengeService.validateWord(challengeId, word);
+      res.status(201).json(result);
+    } catch (error) {
+      console.error('Error creating challenge:', error);
+      res.status(500).json({ error: 'Failed to create challenge' });
+    }
+  }
+
 }
 
