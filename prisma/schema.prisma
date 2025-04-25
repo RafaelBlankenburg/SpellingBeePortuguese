@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String       @id @default(uuid())
+  createdAt DateTime     @default(now())
+
+  userScores UserScore[]
+  userWords  UserWord[]
+}
+
 model Challenge {
   id              String    @id @default(uuid())
   date            DateTime  @default(now())
@@ -41,13 +49,22 @@ model UserWord{
   challenge    Challenge  @relation(fields: [challenge_id], references: [id])
   challenge_id  String
 
-  @@unique([challenge_id, word])
+  user         User       @relation(fields: [user_id], references: [id])
+  user_id      String
+
+  @@unique([challenge_id, word, user_id])
 }
 
 model UserScore {
   id           String     @id @default(uuid())
   score        Int        @default(0)
   lastUpdated  DateTime   @default(now())
+
   challenge    Challenge  @relation(fields: [challenge_id], references: [id])
-  challenge_id String     @unique
+  challenge_id String
+
+  user         User       @relation(fields: [user_id], references: [id])
+  user_id      String
+
+  @@unique([user_id, challenge_id], name: "user_id_challenge_id")
 }

@@ -1,7 +1,8 @@
 import cors from 'cors';
 import express from 'express';
 
-import tagRoutes from './routes/challenge-routes.js';
+import challengeRoutes from './routes/challenge-routes.js';
+import userRoutes from './routes/user-routes.js';
 
 const app = express();
 
@@ -16,7 +17,8 @@ app.use(
 
 app.use(express.json());
 
-app.use('/api', tagRoutes);
+app.use('/api', challengeRoutes);
+app.use('/api', userRoutes);
 
 
 const PORT = process.env.PORT || 4000;

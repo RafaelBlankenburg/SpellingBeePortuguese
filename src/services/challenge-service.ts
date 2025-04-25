@@ -78,21 +78,21 @@ export class ChallengeService {
 
     return challenge;
   }
-  static async validateWord(challengeId: string, word: string) {
+  static async validateWord(challenge_id: string, word: string, user_id: string) {
     const normalizedWord = word.trim().toLowerCase();
 
-    const isValid = await ChallengeRepository.isWordInChallenge(challengeId, normalizedWord);
+    const isValid = await ChallengeRepository.isWordInChallenge(challenge_id, normalizedWord);
     if (!isValid) {
       throw new Error('Word is not valid for this challenge');
     }
 
-    const alreadyFound = await ChallengeRepository.isWordAlreadyFound(challengeId, normalizedWord);
+    const alreadyFound = await ChallengeRepository.isWordAlreadyFound(challenge_id, user_id, normalizedWord);
     if (alreadyFound) {
       throw new Error('Word already submitted');
     }
 
-    await ChallengeRepository.addUserWord(challengeId, normalizedWord);
-    await ChallengeRepository.incrementUserScore(challengeId);
+    await ChallengeRepository.addUserWord(challenge_id, user_id, normalizedWord);
+    await ChallengeRepository.incrementUserScore(challenge_id, user_id);
 
     return {
       message: 'Correto!',

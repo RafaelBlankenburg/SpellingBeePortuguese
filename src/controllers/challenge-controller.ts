@@ -19,15 +19,15 @@ export class ChallengeController {
   }
 
   static async validateWord(req: Request, res: Response) {
-    const { challengeId } = req.params;
-    const { word } = req.body;
+    const { challenge_id } = req.params;
+    const { word, user_id } = req.body;
   
     try {
-      const result = await ChallengeService.validateWord(challengeId, word);
+      const result = await ChallengeService.validateWord(challenge_id, word, user_id);
       res.status(201).json(result);
     } catch (error) {
       console.error('Error creating challenge:', error);
-      res.status(500).json({ error: 'Failed to create challenge' });
+      res.status(500).json({ error: 'Failed send challenge word' });
     }
   }
 
