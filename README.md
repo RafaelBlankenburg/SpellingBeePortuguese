@@ -1,6 +1,6 @@
-# Bite Alegre Backend
+# Spelling Backend
 
-Bem-vindo ao **Bite Alegre Backend**! Este projeto é um servidor backend desenvolvido com **Node.js, TypeScript, Prisma e PostgreSQL**. Ele segue uma arquitetura em camadas.
+Bem-vindo ao **Spelling Bee*! Este projeto é um servidor backend desenvolvido com **Node.js, TypeScript, Prisma e PostgreSQL**. Ele segue uma arquitetura em camadas.
 
 ## 📌 **Pré-requisitos**
 
@@ -12,13 +12,6 @@ Antes de rodar o projeto, certifique-se de ter instalado:
 - [Prisma CLI](https://www.prisma.io/docs/getting-started/quickstart) (opcional, caso queira rodar comandos localmente)
 
 ## 🚀 **Rodando o Projeto**
-
-### **1️⃣ Clonar o repositório**
-
-```sh
-  git clone <https://tools.ages.pucrs.br/gastro/bite-alegre-backend.git>
-  cd bitealegre-backend
-```
 
 ### **2️⃣ Configurar as variáveis de ambiente**
 
@@ -53,13 +46,6 @@ Caso queira visualizar os dados, utilize:
 Ou acesse o **Adminer** pelo navegador:
 🔗 [http://localhost:8080](http://localhost:8080)
 
-## **Criando Branch**
-
-```sh
-  git checkout development
-  git pull
-  git checkout -b feature/US-NUMERO-nome-feat (exemplo: feature/US-03-endpoint-user) (exemplo com fix: fix/US-03-endpoint-user)
-```
 
 ## **Fazendo commit**
 
@@ -70,15 +56,7 @@ Ou acesse o **Adminer** pelo navegador:
   git push
 ```
 
-## **Merge Request**
 
-- Acessar o [site do tools](https://tools.ages.pucrs.br/gastro/bite-alegre-backend/-/branches);
-- Selecionar a sua branch;
-- Solicitar o merge Request;
-
-Obs: lembre-se de adicionar capturas de tela e explicações do que foi feito.
-
----
 
 ### 🏗️ Construção e execução
 
@@ -148,7 +126,7 @@ npm run format
 ## 📄 **Estrutura do Projeto**
 
 ```
-📦 bitealegre-backend
+📦 spelling-backend
 ├── 📂 prisma               # Esquema do Prisma
 │   ├── schema.prisma       # Definição do banco de dados
 │   ├── migrations/         # Migrações geradas pelo Prisma
