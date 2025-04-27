@@ -47,17 +47,6 @@ Ou acesse o **Adminer** pelo navegador:
 🔗 [http://localhost:8080](http://localhost:8080)
 
 
-## **Fazendo commit**
-
-```sh
-  git status
-  git add .
-  git commit -m 'feat:o que eu fiz' (exemplo: 'feat: endpoint user') (exemplo com fix: 'fix: endpoint user')
-  git push
-```
-
-
-
 ### 🏗️ Construção e execução
 
 Caso queira rodar sem Docker:
