@@ -1,6 +1,6 @@
 # Spelling Backend
 
-Bem-vindo ao **Spelling Bee*! Este projeto é um servidor backend desenvolvido com **Node.js, TypeScript, Prisma e PostgreSQL**. Ele segue uma arquitetura em camadas.
+Bem-vindo ao **Spelling Bee**! Este projeto é um servidor backend desenvolvido com **Node.js, TypeScript, Prisma e PostgreSQL**. Ele segue uma arquitetura em camadas.
 
 ## 📌 **Pré-requisitos**
 
