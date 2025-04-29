@@ -10,4 +10,12 @@ export class UserRepository {
 
     return user;
   }
+  static async findById(id: string) {
+    if (!id) {
+      throw new Error('User ID is required');
+    }
+    return await prisma.user.findUnique({
+      where: { id },
+    });
+  }
 }
