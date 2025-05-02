@@ -1,11 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Game.css';
 
 const Game: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [foundWords, setFoundWords] = useState<string[]>([]);
-  const [letters, setLetters] = useState<string[]>(['C', 'O', 'M', 'B', 'E', 'R']);
-  const [centerletter] = useState<string[]>(['A']);
+  const [letters, setLetters] = useState<string[]>([]);
+  const [originalLetters, setOriginalLetters] = useState<string[]>([]);
+  const [centerLetter, setCenterLetter] = useState<string>('');
+  const [userId, setUserId] = useState<string | null>(null);
+  const [challengeId, setChallengeId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const initializeGame = async () => {
+      try {
+        // Cria o usuário
+        const userRes = await fetch('http://localhost:4000/api/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const userData = await userRes.json();
+        setUserId(userData.id);
+
+        // Cria o desafio
+        const challengeRes = await fetch('http://localhost:4000/api/challenges', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        
+        const challengeData = await challengeRes.json();
+        setChallengeId(challengeData.id);
+        console.log('User response:', userData);
+        console.log('Challenge response:', challengeData);
+
+        const splitLetters = challengeData.letters.split('');
+        setOriginalLetters(splitLetters);
+        setLetters(splitLetters);
+        setCenterLetter(challengeData.centerLetter);
+      } catch (error) {
+        console.error('Erro ao iniciar o jogo:', error);
+      }
+    };
+
+    initializeGame();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value.toUpperCase());
@@ -20,22 +58,19 @@ const Game: React.FC = () => {
   };
 
   const shuffleLetters = () => {
-    const shuffled = [...letters].sort(() => Math.random() - 0.5);
+    const shuffled = [...originalLetters].sort(() => Math.random() - 0.5);
     setLetters(shuffled);
   };
 
   return (
     <div className="game-container">
-
       <div className="top-bar">
         <div className="top-bar-corner"></div>
         <h1>ComBe</h1>
         <div className="top-bar-corner"></div>
       </div>
 
-
       <div className="main-content">
-
         <div className="game-section left-section">
           <form onSubmit={handleSubmit} className="input-container">
             <input
@@ -48,19 +83,17 @@ const Game: React.FC = () => {
           </form>
 
           <div className="hexagon-container">
+            <div className="hexagon top-left">{letters[0]}</div>
+            <div className="hexagon top-right">{letters[1]}</div>
 
-          <div className="hexagon top-left">{letters[0]}</div>
-          <div className="hexagon top-right">{letters[1]}</div>
-          
+            <div className="hexagon mid-left">{letters[2]}</div>
+            <div className="hexagon center">{centerLetter}</div>
+            <div className="hexagon mid-right">{letters[3]}</div>
 
-          <div className="hexagon mid-left">{letters[2]}</div>
-          <div className="hexagon center">{centerletter[0]}</div>
-          <div className="hexagon mid-right">{letters[3]}</div>
-          
- 
-          <div className="hexagon bottom-left">{letters[4]}</div>
-          <div className="hexagon bottom-right">{letters[5]}</div>
-        </div>
+            <div className="hexagon bottom-left">{letters[4]}</div>
+            <div className="hexagon bottom-right">{letters[5]}</div>
+          </div>
+
           <button onClick={shuffleLetters} className="reload-button">
             ↻
           </button>
