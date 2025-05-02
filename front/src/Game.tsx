@@ -5,15 +5,14 @@ const Game: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [foundWords, setFoundWords] = useState<string[]>([]);
   const [letters, setLetters] = useState<string[]>([]);
-  const [originalLetters, setOriginalLetters] = useState<string[]>([]);
-  const [centerLetter, setCenterLetter] = useState<string>('');
-  const [userId, setUserId] = useState<string | null>(null);
-  const [challengeId, setChallengeId] = useState<string | null>(null);
+  const [centerLetter, setCenterLetter] = useState('');
+  const [userId, setUserId] = useState('');
+  const [challengeId, setChallengeId] = useState('');
 
   useEffect(() => {
     const initializeGame = async () => {
       try {
-        // Cria o usuário
+
         const userRes = await fetch('http://localhost:4000/api/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' }
@@ -21,21 +20,16 @@ const Game: React.FC = () => {
         const userData = await userRes.json();
         setUserId(userData.id);
 
-        // Cria o desafio
+
         const challengeRes = await fetch('http://localhost:4000/api/challenges', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' }
         });
-
-        
         const challengeData = await challengeRes.json();
         setChallengeId(challengeData.id);
-        console.log('User response:', userData);
-        console.log('Challenge response:', challengeData);
 
-        const splitLetters = challengeData.letters.split('');
-        setOriginalLetters(splitLetters);
-        setLetters(splitLetters);
+
+        setLetters(challengeData.letters.split(''));
         setCenterLetter(challengeData.centerLetter);
       } catch (error) {
         console.error('Erro ao iniciar o jogo:', error);
@@ -49,16 +43,28 @@ const Game: React.FC = () => {
     setInputValue(e.target.value.toUpperCase());
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    setInputValue(''); 
     e.preventDefault();
-    if (inputValue.trim() && !foundWords.includes(inputValue)) {
-      setFoundWords([...foundWords, inputValue]);
-      setInputValue('');
-    }
+    const trimmed = inputValue.trim().toLowerCase(); 
+    if (!trimmed || foundWords.includes(trimmed)) return;
+
+      const res = await fetch(`http://localhost:4000/api/challenges/${challengeId}/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          word: trimmed,
+          user_id: userId
+        })
+      });
+
+      if (!res.ok) throw new Error('Erro na validação');
+
+      setFoundWords((prevFoundWords) => [...prevFoundWords, trimmed.toUpperCase()]); 
   };
 
   const shuffleLetters = () => {
-    const shuffled = [...originalLetters].sort(() => Math.random() - 0.5);
+    const shuffled = [...letters].sort(() => Math.random() - 0.5);
     setLetters(shuffled);
   };
 
