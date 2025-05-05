@@ -15,11 +15,11 @@ html, body {
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  width: 100vw; 
-  height: 100vh; 
+  width: 100vw;
+  height: 100vh;
   background-color: white;
+  color: black;
 }
-
 
 .top-bar {
   background-color: #FFE100;
@@ -69,7 +69,7 @@ html, body {
 .input-container {
   width: 100%;
   max-width: 300px;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 }
 
 .input-field {
@@ -78,6 +78,7 @@ html, body {
   background-color: rgba(116, 233, 246, 0.25);
   border: none;
   border-radius: 8px;
+  color: black;
 }
 
 
@@ -86,13 +87,14 @@ html, body {
   width: 300px;
   height: 260px;
   margin: 20px auto;
+  color: black;
 }
 
 .hexagon {
   position: absolute;
   width: 100px;
   height: 100px;
-  background-color: rgba(116, 233, 246, 0.25);
+  background-color: #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -155,6 +157,7 @@ html, body {
   padding: 0;          
   border-radius: 5px;   
   background-color: rgba(116, 233, 246, 0.25); 
+  color: black;
 }
 
 

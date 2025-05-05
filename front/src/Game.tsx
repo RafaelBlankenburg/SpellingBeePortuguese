@@ -12,22 +12,28 @@ const Game: React.FC = () => {
   useEffect(() => {
     const initializeGame = async () => {
       try {
+        // Verifica se já existe um userId no localStorage
+        const storedUserId = localStorage.getItem('userId');
+        let currentUserId = storedUserId;
 
-        const userRes = await fetch('http://localhost:4000/api/users', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        const userData = await userRes.json();
-        setUserId(userData.id);
+        // Se não existir, cria um novo usuário
+        if (!storedUserId) {
+          const userRes = await fetch('http://localhost:4000/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const userData = await userRes.json();
+          currentUserId = userData.id as string; 
+          localStorage.setItem('userId', currentUserId);
+        }
 
-
+        setUserId(currentUserId || '');
         const challengeRes = await fetch('http://localhost:4000/api/challenges', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' }
         });
         const challengeData = await challengeRes.json();
         setChallengeId(challengeData.id);
-
 
         setLetters(challengeData.letters.split(''));
         setCenterLetter(challengeData.centerLetter);
@@ -44,11 +50,12 @@ const Game: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    setInputValue(''); 
     e.preventDefault();
-    const trimmed = inputValue.trim().toLowerCase(); 
+    const trimmed = inputValue.trim().toLowerCase();
     if (!trimmed || foundWords.includes(trimmed)) return;
+    setInputValue('');
 
+    try {
       const res = await fetch(`http://localhost:4000/api/challenges/${challengeId}/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,7 +67,10 @@ const Game: React.FC = () => {
 
       if (!res.ok) throw new Error('Erro na validação');
 
-      setFoundWords((prevFoundWords) => [...prevFoundWords, trimmed.toUpperCase()]); 
+      setFoundWords((prev) => [...prev, trimmed.toUpperCase()]);
+    } catch (error) {
+      console.error('Erro ao validar palavra:', error);
+    }
   };
 
   const shuffleLetters = () => {
@@ -89,15 +99,21 @@ const Game: React.FC = () => {
           </form>
 
           <div className="hexagon-container">
-            <div className="hexagon top-left">{letters[0]}</div>
-            <div className="hexagon top-right">{letters[1]}</div>
+            {letters.length === 6 ? (
+              <>
+                <div className="hexagon top-left">{letters[0]}</div>
+                <div className="hexagon top-right">{letters[1]}</div>
 
-            <div className="hexagon mid-left">{letters[2]}</div>
-            <div className="hexagon center">{centerLetter}</div>
-            <div className="hexagon mid-right">{letters[3]}</div>
+                <div className="hexagon mid-left">{letters[2]}</div>
+                <div className="hexagon center">{centerLetter}</div>
+                <div className="hexagon mid-right">{letters[3]}</div>
 
-            <div className="hexagon bottom-left">{letters[4]}</div>
-            <div className="hexagon bottom-right">{letters[5]}</div>
+                <div className="hexagon bottom-left">{letters[4]}</div>
+                <div className="hexagon bottom-right">{letters[5]}</div>
+              </>
+            ) : (
+              <p>Carregando letras...</p>
+            )}
           </div>
 
           <button onClick={shuffleLetters} className="reload-button">
