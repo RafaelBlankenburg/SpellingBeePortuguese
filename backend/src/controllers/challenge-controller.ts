@@ -30,6 +30,15 @@ export class ChallengeController {
       res.status(500).json({ error: 'Failed send challenge word' });
     }
   }
+  
+  static async challengeByDate(req: Request, res: Response){
+    try {
+    const challenge = await ChallengeService.TodayChallenge();
+    res.status(200).json(challenge);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar ou criar o desafio' });
+  }
+  }
 
 }
 

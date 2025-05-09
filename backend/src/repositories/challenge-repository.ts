@@ -79,4 +79,27 @@ export class ChallengeRepository {
   
     return userScore;
   }
+
+  static async getTodayChallenge() {
+    try {
+
+      const now = new Date();
+      const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+      const endOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
+
+      const challenge = await prisma.challenge.findFirst({
+        where: {
+          date: {
+            gte: startOfDay,
+            lte: endOfDay,
+          },
+        },
+      });
+
+      return challenge;
+    } catch (error) {
+      console.error('Erro em getTodayChallenge:', error);
+      throw new Error('Falha ao buscar o challenge do dia');
+    }
+  }
 }
