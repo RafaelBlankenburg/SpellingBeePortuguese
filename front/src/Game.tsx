@@ -10,13 +10,25 @@ const Game: React.FC = () => {
   const [challengeId, setChallengeId] = useState('');
 
   useEffect(() => {
+    const fetchUserWords = async (userId: string, challengeId: string) => {
+  try {
+    console.log("cha: " + challengeId +"\nuse: " + userId);
+    const res = await fetch(
+      `http://localhost:4000/api/userwords?user_id=${userId}&challenge_id=${challengeId}`, 
+      { method: 'GET' }
+    );
+    if (!res.ok) throw new Error('Erro ao buscar palavras');
+    const words = await res.json(); 
+    setFoundWords(words.map((w: { word: string }) => w.word.toUpperCase()));
+  } catch (error) {
+    console.error('Erro ao buscar palavras do usuário:', error);
+  }
+};
     const initializeGame = async () => {
       try {
-        // Verifica se já existe um userId no localStorage
+
         const storedUserId = localStorage.getItem('userId');
         let currentUserId = storedUserId;
-
-        // Se não existir, cria um novo usuário
         if (!storedUserId) {
           const userRes = await fetch('http://localhost:4000/api/users', {
             method: 'POST',
@@ -29,14 +41,14 @@ const Game: React.FC = () => {
 
         setUserId(currentUserId || '');
         const challengeRes = await fetch('http://localhost:4000/api/challenges', {
-          method: 'POST',
+          method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
         const challengeData = await challengeRes.json();
         setChallengeId(challengeData.id);
-
         setLetters(challengeData.letters.split(''));
         setCenterLetter(challengeData.centerLetter);
+        await fetchUserWords(currentUserId || '', challengeData.id);
       } catch (error) {
         console.error('Erro ao iniciar o jogo:', error);
       }
