@@ -101,4 +101,14 @@ export class ChallengeService {
       userScore: userScore.score,
     };
   }
+  static async TodayChallenge(){
+    let challenge = await ChallengeRepository.getTodayChallenge();
+
+    if (!challenge) {
+      challenge = await ChallengeService.createChallenge();
+      console.log("challenge: " + challenge)
+    }
+
+    return challenge;
+  }
 }
