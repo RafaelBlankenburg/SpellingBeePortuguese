@@ -36,7 +36,7 @@ export class ChallengeController {
     const challenge = await ChallengeService.TodayChallenge();
     res.status(200).json(challenge);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar ou criar o desafio' });
+    res.status(500).json({ error: 'Failed to search or create challenge.' });
   }
   }
 
