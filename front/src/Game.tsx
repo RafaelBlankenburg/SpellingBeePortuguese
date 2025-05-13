@@ -8,6 +8,7 @@ const Game: React.FC = () => {
   const [centerLetter, setCenterLetter] = useState('');
   const [userId, setUserId] = useState('');
   const [challengeId, setChallengeId] = useState('');
+  const [userScore, setUserScore] = useState<number>(0);
 
   useEffect(() => {
     const fetchUserWords = async (userId: string, challengeId: string) => {
@@ -134,6 +135,11 @@ const Game: React.FC = () => {
         </div>
 
         <div className="game-section right-section">
+          <div className="score-box">
+            <h3>Pontuação</h3>
+            <p>{userScore}</p>
+          </div>
+
           <div className="found-words-container">
             <h3>Palavras encontradas:</h3>
             <div className="found-words-list">
