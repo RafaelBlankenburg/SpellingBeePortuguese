@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { UserWordController } from '../controllers/userword-controller.js';
+import { UserScoreController } from '../controllers/userscore-controller.js';
 
 const router = Router();
 
-router.get('/userscore', UserWordController.list);
+router.get('/userscore', UserScoreController.list);
 
 export default router;
