@@ -4,7 +4,7 @@ Bem-vindo ao **Spelling Bee**! Este projeto é um servidor backend desenvolvido 
 
 ## 📌 **Pré-requisitos**
 
-Antes de rodar o projeto, de rodar o comando 'npm i'.
+Antes de rodar o projeto, execute o comando 'npm i'.
 
 ## 🚀 **Rodando o Projeto**
 
