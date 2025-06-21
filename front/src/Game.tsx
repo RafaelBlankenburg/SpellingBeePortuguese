@@ -8,22 +8,35 @@ const Game: React.FC = () => {
   const [centerLetter, setCenterLetter] = useState('');
   const [userId, setUserId] = useState('');
   const [challengeId, setChallengeId] = useState('');
+  const [userScore, setUserScore] = useState<number>(0);
 
   useEffect(() => {
     const fetchUserWords = async (userId: string, challengeId: string) => {
-  try {
-    console.log("cha: " + challengeId +"\nuse: " + userId);
-    const res = await fetch(
-      `http://localhost:4000/api/userwords?user_id=${userId}&challenge_id=${challengeId}`, 
-      { method: 'GET' }
-    );
-    if (!res.ok) throw new Error('Erro ao buscar palavras');
-    const words = await res.json(); 
-    setFoundWords(words.map((w: { word: string }) => w.word.toUpperCase()));
-  } catch (error) {
-    console.error('Erro ao buscar palavras do usuário:', error);
-  }
-};
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/userwords?user_id=${userId}&challenge_id=${challengeId}`, 
+        { method: 'GET' }
+      );
+      if (!res.ok) throw new Error('Erro ao buscar palavras');
+      const words = await res.json(); 
+      setFoundWords(words.map((w: { word: string }) => w.word.toUpperCase()));
+    } catch (error) {
+      console.error('Erro ao buscar palavras do usuário:', error);
+    }
+  };
+    const fetchUserScore = async (userId: string, challengeId: string) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/userscore?user_id=${userId}&challenge_id=${challengeId}`, 
+        { method: 'GET' }
+      );
+      if (!res.ok) throw new Error('Erro ao buscar pontuacao');
+      const points = await res.json(); 
+      setUserScore(points.score); 
+    } catch (error) {
+      console.error('Erro ao buscar palavras do usuário:', error);
+    }
+  };
     const initializeGame = async () => {
       try {
 
@@ -49,6 +62,7 @@ const Game: React.FC = () => {
         setLetters(challengeData.letters.split(''));
         setCenterLetter(challengeData.centerLetter);
         await fetchUserWords(currentUserId || '', challengeData.id);
+        await fetchUserScore(currentUserId || '', challengeData.id);
       } catch (error) {
         console.error('Erro ao iniciar o jogo:', error);
       }
@@ -78,8 +92,9 @@ const Game: React.FC = () => {
       });
 
       if (!res.ok) throw new Error('Erro na validação');
-
+      const data = await res.json();
       setFoundWords((prev) => [...prev, trimmed.toUpperCase()]);
+      setUserScore(data.userScore);
     } catch (error) {
       console.error('Erro ao validar palavra:', error);
     }
@@ -134,6 +149,11 @@ const Game: React.FC = () => {
         </div>
 
         <div className="game-section right-section">
+          <div className="score-box">
+            <h3>Pontuação</h3>
+            <p>{userScore}</p>
+          </div>
+
           <div className="found-words-container">
             <h3>Palavras encontradas:</h3>
             <div className="found-words-list">

@@ -166,6 +166,15 @@ html, body {
   transition: transform 0.2s ease;
 }
 
+.score-box {
+  background-color: #fff8dc;  
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
 .found-words-container {
   flex: 1;
   background-color: rgba(116, 233, 246, 0.25);
